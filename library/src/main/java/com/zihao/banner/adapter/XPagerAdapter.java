@@ -39,7 +39,7 @@ public class XPagerAdapter extends PagerAdapter {
         int count = dataList == null ? 0 : dataList.size();
 
         if (isAutoLoop) {// 只有在开启无限自动轮播时，才会设置左右侧填充页卡
-            count = dataList == null ? 0 : dataList.size() < 1 ? 1 : dataList.size() + 2;
+            count = count > 1 ? count + 2 : count;
             if (count > 1) {// 只有创建1个以上的真实页卡时才会在边界(左右侧)填充页卡用于支持无限循环效果
                 realPageStartPos = 1;// 真实的页卡起始位置为1,0为最左侧填充页卡
                 realPageEndPos = count - 2;// 真实的页卡结束位置为count - 2,count - 1为最右侧填充页卡
