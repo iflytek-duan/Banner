@@ -16,6 +16,7 @@ import java.util.List;
  * Version：v1.0
  */
 public class XPagerAdapter extends PagerAdapter {
+    private static final String TAG = XPagerAdapter.class.getSimpleName();
 
     private BannerAdapter bannerAdapter;
     private List dataList;
