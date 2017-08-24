@@ -46,6 +46,20 @@ public class MainActivity extends AppCompatActivity {
         dataList = new ArrayList<>();
         dataList.add(new BannerTestModel(R.drawable.banner_bg));
         dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg));
+        dataList.add(new BannerTestModel(R.drawable.banner_bg1));
         dataList.add(new BannerTestModel(R.drawable.banner_bg2));
     }
 

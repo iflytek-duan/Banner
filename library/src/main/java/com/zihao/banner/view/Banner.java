@@ -103,17 +103,17 @@ public class Banner extends ViewPager {
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (isAutoLoop && positionOffset == 0) {// 允许无限轮播且滚动完成进入内部判断
-                if (position == 0) {// 如果position为0，则跳转至结束位置
-                    // switch to the last page.
-                    setCurrentItem(pagerAdapter.getRealPageEndPos(), false);
-                }
-
-                if (position == pagerAdapter.getCount() - 1) {// 如果position为pagerAdapter.getCount() - 1，则跳转至开始位置
-                    // switch to the first page.
-                    setCurrentItem(pagerAdapter.getRealPageStartPos(), false);
-                }
-            }
+//            if (isAutoLoop && positionOffset == 0) {// 允许无限轮播且滚动完成进入内部判断
+//                if (position == 0) {// 如果position为0，则跳转至结束位置
+//                    // switch to the last page.
+//                    setCurrentItem(pagerAdapter.getRealPageEndPos(), false);
+//                }
+//
+//                if (position == pagerAdapter.getCount() - 1) {// 如果position为pagerAdapter.getCount() - 1，则跳转至开始位置
+//                    // switch to the first page.
+//                    setCurrentItem(pagerAdapter.getRealPageStartPos(), false);
+//                }
+//            }
         }
 
         @Override
@@ -123,7 +123,23 @@ public class Banner extends ViewPager {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
+            // 这里主要是解决在onPageScrolled出现的闪屏问题
+            // (positionOffset为0的时候，并不一定是切换完成，所以动画还在执行，强制再次切换，就会闪屏)
+            switch (state) {
+                case ViewPager.SCROLL_STATE_IDLE:// 空闲状态，没有任何滚动正在进行（表明完成滚动）
+                    if (isAutoLoop) {
+                        if (getCurrentItem() == 0) {
+                            setCurrentItem(pagerAdapter.getRealPageEndPos(), false);
+                        } else if (getCurrentItem() == pagerAdapter.getCount() - 1) {
+                            setCurrentItem(pagerAdapter.getRealPageStartPos(), false);
+                        }
+                    }
+                    break;
+                case ViewPager.SCROLL_STATE_DRAGGING:// 正在拖动page状态
+                    break;
+                case ViewPager.SCROLL_STATE_SETTLING:// 手指已离开屏幕，自动完成剩余的动画效果
+                    break;
+            }
         }
 
     };
