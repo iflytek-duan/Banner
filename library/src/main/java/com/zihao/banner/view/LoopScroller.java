@@ -13,7 +13,7 @@ import android.widget.Scroller;
  */
 class LoopScroller extends Scroller {
 
-    private boolean noDuration = false;// 标识是否包含切换动画时间
+    private boolean noDuration = false;// 标识是否没有滚动时间(true:没有；false:有)，默认为有
 
     LoopScroller(Context context) {
         super(context);
@@ -27,6 +27,15 @@ class LoopScroller extends Scroller {
         super(context, interpolator, flywheel);
     }
 
+    /**
+     * 开始滚动
+     *
+     * @param startX   开始X位置
+     * @param startY   开始Y位置
+     * @param dx       目标X位置
+     * @param dy       目标Y位置
+     * @param duration 完成滚动的时间
+     */
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
         if (noDuration) {
