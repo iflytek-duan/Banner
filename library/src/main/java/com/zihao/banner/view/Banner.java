@@ -159,7 +159,7 @@ public class Banner extends ViewPager {
     public void setCurrentItem(int item, boolean smoothScroll) {
         int current = getCurrentItem();
 
-        //如果页面相隔大于1,就设置页面切换的动画的时间为0
+        // 如果页面相隔大于1,就设置页面切换时完成滑动的时间为0
         if (Math.abs(current - item) > 1) {
             loopScroller.setNoDuration(true);// 滑动前设置动画时间为0
             super.setCurrentItem(item, smoothScroll);
@@ -184,7 +184,7 @@ public class Banner extends ViewPager {
         try {
             Field field = ViewPager.class.getDeclaredField("mScroller");
             field.setAccessible(true);
-            field.set(this, loopScroller);// 利用反射设置mScroller域为自己定义的MScroller
+            field.set(this, loopScroller);// 利用反射设置mScroller域为自己定义的loopScroller
         } catch (Exception e) {
             Log.e(TAG, "setViewPagerScrollSpeed error:" + e.toString());
         }
