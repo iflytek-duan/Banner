@@ -98,8 +98,9 @@ public class Banner extends ViewPager {
         /**
          * 页卡滚动状态回调
          * @param position 页卡位置 position=0，开始边界；position=getCount()-1，结束边界。
-         * @param positionOffset 位置间距，positionOffset=0时标识完成滚动。
-         * @param positionOffsetPixels Value in pixels indicating the offset from position.
+         * @param positionOffset 是当前页面滑动比例，如果页面向右翻动，这个值不断变大，
+         *                       最后在趋近1的情况后突变为0。如果页面向左翻动，这个值不断变小，最后变为0
+         * @param positionOffsetPixels 当前页面偏移的像素位置.
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
