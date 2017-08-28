@@ -174,4 +174,8 @@ public class XPagerAdapter extends PagerAdapter {
     public int getRealPageEndPos() {
         return realPageEndPos;
     }
+
+    public boolean isAutoLoop() {
+        return isAutoLoop;
+    }
 }
