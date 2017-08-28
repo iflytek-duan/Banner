@@ -21,10 +21,12 @@
 # 支持属性
 > 目前仅支持自定义`isAutoLoop`属性，后期会陆续拓展。
 
-- 可通过代码或者在xml中配置`isAutoLoop`属性，以此打开/关闭无限轮播开关，默认为打开状态.
+- isAutoLoop(标识是否打开/关闭无限轮播开关，默认为打开状态-true)
+在代码中动态设置：
 ```
     banner.setAutoLoop(true);
 ```
+在xml中静态配置：
 ```
 app:autoLoop="true"
 ```
