@@ -29,9 +29,9 @@ public class Banner extends RelativeLayout {
     private BannerAdapter bannerAdapter;
 
     /**
-     * 标识是否开启无限轮播，默认为否
+     * 标识是否开启无限轮播，默认为开启状态
      */
-    private boolean isAutoLoop = false;
+    private boolean isAutoLoop = true;
 
     public Banner(Context context) {
         this(context, null);
@@ -61,7 +61,7 @@ public class Banner extends RelativeLayout {
      */
     private void initCustomAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
-        isAutoLoop = typedArray.getBoolean(R.styleable.Banner_autoLoop, false);
+        isAutoLoop = typedArray.getBoolean(R.styleable.Banner_autoLoop, true);
         typedArray.recycle();
     }
 

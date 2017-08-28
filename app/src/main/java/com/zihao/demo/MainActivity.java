@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         initData();
         final Banner banner = (Banner) findViewById(R.id.main_banner);
-        banner.setAutoLoop(true);
         banner.setBannerAdapter(new BannerAdapter<BannerTestModel>(dataList) {
 
             @Override
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
     }
 
     private void initData() {
