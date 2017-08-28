@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/iflytek-duan/Banner.svg)](https://jitpack.io/#iflytek-duan/Banner)
 # Banner
 使用ViewPager实现无限轮播效果
 ## 如何实现无限轮播效果？
