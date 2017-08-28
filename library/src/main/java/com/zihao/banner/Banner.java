@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.zihao.banner.adapter.BannerAdapter;
-import com.zihao.banner.adapter.XPagerAdapter;
+import com.zihao.banner.adapter.LoopPagerAdapter;
 import com.zihao.banner.view.LoopViewPager;
 
 import java.util.List;
@@ -109,7 +109,7 @@ public class Banner extends RelativeLayout {
      * @param dataList 数据集
      */
     private void setVPAdapter(List dataList) {
-        XPagerAdapter pagerAdapter = new XPagerAdapter(bannerAdapter, dataList, isAutoLoop);
+        LoopPagerAdapter pagerAdapter = new LoopPagerAdapter(bannerAdapter, dataList, isAutoLoop);
         loopViewPager.setAdapter(pagerAdapter);
         loopViewPager.setCurrentItem(pagerAdapter.getRealPageStartPos());// 先在这里滚动至非填充区域
         if (pagerAdapter.getCount() > 2) {

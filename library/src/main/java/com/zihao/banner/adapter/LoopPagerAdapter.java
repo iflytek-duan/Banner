@@ -9,14 +9,14 @@ import android.widget.ImageView;
 import java.util.List;
 
 /**
- * ClassName：XPagerAdapter
- * Description：TODO<ViewPager页卡适配器>
+ * ClassName：LoopPagerAdapter
+ * Description：TODO<支持无限轮播的ViewPager页卡适配器>
  * Author：zihao
  * Date：2017/8/17 16:47
  * Version：v1.0
  */
-public class XPagerAdapter extends PagerAdapter {
-    private static final String TAG = XPagerAdapter.class.getSimpleName();
+public class LoopPagerAdapter extends PagerAdapter {
+    private static final String TAG = LoopPagerAdapter.class.getSimpleName();
 
     private BannerAdapter bannerAdapter;
     private List dataList;
@@ -24,7 +24,7 @@ public class XPagerAdapter extends PagerAdapter {
     private int realPageEndPos = 0;// 页卡真实结束位置，默认为0
     private boolean isAutoLoop = false;// 标识是否开启无限轮播，默认为否
 
-    public XPagerAdapter(BannerAdapter bannerAdapter, List dataList, boolean isAutoLoop) {
+    public LoopPagerAdapter(BannerAdapter bannerAdapter, List dataList, boolean isAutoLoop) {
         this.bannerAdapter = bannerAdapter;
         this.dataList = dataList;
         this.isAutoLoop = isAutoLoop;

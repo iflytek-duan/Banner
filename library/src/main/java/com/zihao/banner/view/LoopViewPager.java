@@ -6,16 +6,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.zihao.banner.adapter.XPagerAdapter;
+import com.zihao.banner.adapter.LoopPagerAdapter;
 
 import java.lang.reflect.Field;
 
 /**
- * ClassName：ILViewPager
- * Description：TODO<一个支持无限循环的ViewPager>
- * Author：Administrator
+ * ClassName：LoopViewPager
+ * Description：TODO<一个支持无限轮播的ViewPager>
+ * Author：zihao
  * Date：2017/8/28 10:49
- * Email：jgduan@dohenes.com
  * Version：v1.0
  */
 public class LoopViewPager extends ViewPager {
@@ -23,7 +22,7 @@ public class LoopViewPager extends ViewPager {
 
     private LoopScroller loopScroller;
 
-    private XPagerAdapter xPagerAdapter;
+    private LoopPagerAdapter loopPagerAdapter;
 
     public LoopViewPager(Context context) {
         super(context);
@@ -123,11 +122,11 @@ public class LoopViewPager extends ViewPager {
             // (positionOffset为0的时候，并不一定是切换完成，所以动画还在执行，强制再次切换，就会闪屏)
             switch (state) {
                 case ViewPager.SCROLL_STATE_IDLE:// 空闲状态，没有任何滚动正在进行（表明完成滚动）
-                    if (xPagerAdapter != null && xPagerAdapter.isAutoLoop()) {
+                    if (loopPagerAdapter != null && loopPagerAdapter.isAutoLoop()) {
                         if (getCurrentItem() == 0) {
-                            setCurrentItem(xPagerAdapter.getRealPageEndPos(), false);
+                            setCurrentItem(loopPagerAdapter.getRealPageEndPos(), false);
                         } else if (getCurrentItem() == getAdapter().getCount() - 1) {
-                            setCurrentItem(xPagerAdapter.getRealPageStartPos(), false);
+                            setCurrentItem(loopPagerAdapter.getRealPageStartPos(), false);
                         }
                     }
                     break;
@@ -140,8 +139,8 @@ public class LoopViewPager extends ViewPager {
 
     };
 
-    public void setAdapter(XPagerAdapter adapter) {
+    public void setAdapter(LoopPagerAdapter adapter) {
         super.setAdapter(adapter);
-        this.xPagerAdapter = adapter;
+        this.loopPagerAdapter = adapter;
     }
 }
