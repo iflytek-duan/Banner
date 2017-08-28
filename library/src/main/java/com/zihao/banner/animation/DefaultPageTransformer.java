@@ -1,4 +1,4 @@
-package com.zihao.banner.view;
+package com.zihao.banner.animation;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
