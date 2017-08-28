@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.zihao.banner.adapter.BannerAdapter;
 import com.zihao.banner.bean.BannerTestModel;
-import com.zihao.banner.view.Banner;
+import com.zihao.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;

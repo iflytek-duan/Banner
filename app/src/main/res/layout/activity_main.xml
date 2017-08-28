@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.zihao.demo.MainActivity">
 
-    <com.zihao.banner.view.Banner
+    <com.zihao.banner.Banner
         android:id="@+id/main_banner"
         android:layout_width="417dp"
         android:layout_height="144dp"

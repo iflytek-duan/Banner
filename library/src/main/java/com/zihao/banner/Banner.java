@@ -1,4 +1,4 @@
-package com.zihao.banner.view;
+package com.zihao.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,9 +8,9 @@ import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.zihao.banner.R;
 import com.zihao.banner.adapter.BannerAdapter;
 import com.zihao.banner.adapter.XPagerAdapter;
+import com.zihao.banner.view.LoopViewPager;
 
 import java.util.List;
 
