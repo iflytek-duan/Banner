@@ -5,13 +5,14 @@ import android.content.res.TypedArray;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ViewGroup;
+import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.zihao.banner.adapter.BannerAdapter;
 import com.zihao.banner.adapter.LoopPagerAdapter;
+import com.zihao.banner.util.ScreenUtils;
 import com.zihao.banner.view.LoopViewPager;
 
 import java.util.List;
@@ -27,11 +28,28 @@ public class Banner extends RelativeLayout {
 
     private static final String TAG = Banner.class.getSimpleName();
 
+    /**
+     * 布局参数
+     */
+    private static final int LT_WC = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private static final int LT_MP = LinearLayout.LayoutParams.MATCH_PARENT;
+    private static final int RT_MP = RelativeLayout.LayoutParams.MATCH_PARENT;
+    private static final int RT_WC = RelativeLayout.LayoutParams.WRAP_CONTENT;
+    /**
+     * 指示器容器属性
+     */
+    private LinearLayout indicatorContainerLt;// 指示器容器
+    private int indicatorContainerLRPadding;// 指示器容器左/右填充
+    private int indicatorContainerTBPadding;// 指示器容器上/下填充
+    /**
+     * 点的layout的属性
+     */
+    private int pointLRMargin;// point点左/右margin
+    private int pointTBMargin;// point点上/下margin
+
     private LoopViewPager loopViewPager;
     private LoopPagerAdapter loopPagerAdapter;
     private BannerAdapter bannerAdapter;
-
-    private LinearLayout pointsLayout;
 
     /**
      * 标识是否开启无限轮播，默认为开启状态
@@ -55,7 +73,13 @@ public class Banner extends RelativeLayout {
      * @param context context
      */
     private void initDefaultAttrs(Context context) {
+        // 默认指示器容器的上下左右padding为6dp
+        indicatorContainerLRPadding = ScreenUtils.dp2px(context, 6);
+        indicatorContainerTBPadding = ScreenUtils.dp2px(context, 6);
 
+        // 默认点的上下左右Margin为4dp
+        pointLRMargin = ScreenUtils.dp2px(context, 4);
+        pointTBMargin = ScreenUtils.dp2px(context, 4);
     }
 
     /**
@@ -77,15 +101,38 @@ public class Banner extends RelativeLayout {
      */
     private void initView(Context context) {
         initViewPager(context);
+        initIndicatorContainerView(context);
     }
 
     private void initViewPager(Context context) {
         loopViewPager = new LoopViewPager(context);
         loopViewPager.addOnPageChangeListener(onPageChangeListener);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(RT_MP, RT_MP);
         addView(loopViewPager, params);
     }
 
+    /**
+     * 初始化指示器容器内容
+     *
+     * @param context context
+     */
+    private void initIndicatorContainerView(Context context) {
+        indicatorContainerLt = new LinearLayout(context);// 初始化指示器容器布局
+        indicatorContainerLt.setOrientation(LinearLayout.HORIZONTAL);// 设置为水平布局方式
+        indicatorContainerLt.setGravity(Gravity.CENTER);// 设置内部内容居中展示
+        indicatorContainerLt.setPadding(indicatorContainerLRPadding, 0, indicatorContainerLRPadding,
+                indicatorContainerTBPadding);// 设置填充
+        LayoutParams pointsLayoutParams = new LayoutParams(RT_MP, RT_WC);
+        pointsLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        pointsLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        this.addView(indicatorContainerLt, pointsLayoutParams);
+    }
+
+    /**
+     * 设置Banner的适配器
+     *
+     * @param bannerAdapter bannerAdapter
+     */
     public void setBannerAdapter(BannerAdapter bannerAdapter) {
         this.bannerAdapter = bannerAdapter;
         setVPDataSource();
@@ -132,23 +179,15 @@ public class Banner extends RelativeLayout {
      * @param dataList 数据集
      */
     private void initPoints(Context context, List dataList) {
-//        pointsLayout = new LinearLayout(context);
-//        pointsLayout.setOrientation(LinearLayout.HORIZONTAL);// 设置水平方向
-//        pointsLayout.setGravity(Gravity.NO_GRAVITY);
-//        LayoutParams pointsLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-//
-//        LayoutParams pointParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        pointParams.setMargins(dp2px(context, 12), 0, dp2px(context, 12), 0);
-//        for (int i = 0; i < dataList.size(); i++) {
-//            ImageView pointImg = new ImageView(context);
-//            pointImg.setBackgroundResource(R.drawable.point_default_selector);
-//            pointsLayout.addView(pointImg, pointParams);
-//        }
-//
-//        pointsLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        pointsLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-//        this.addView(pointsLayout, pointsLayoutParams);
+        LinearLayout.LayoutParams pointParams = new LinearLayout.LayoutParams(LT_WC, LT_WC);
+        pointParams.setMargins(pointLRMargin, pointTBMargin, pointLRMargin, pointTBMargin);
+        ImageView pointImg;
+        for (int i = 0; i < dataList.size(); i++) {
+            pointImg = new ImageView(context);
+            pointImg.setBackgroundResource(R.drawable.point_default_selector);
+            pointImg.setEnabled(false);
+            indicatorContainerLt.addView(pointImg, pointParams);
+        }
     }
 
     /**
@@ -224,24 +263,29 @@ public class Banner extends RelativeLayout {
         isAutoLoop = autoLoop;
     }
 
-    public static int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    public static int sp2px(Context context, float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
-    }
-
     /**
-     * 将点切换到指定的位置
-     * 就是将指定位置的点设置成Enable
+     * 切换至指定的指示点(即将对应位置的点设置为Enable=true)
+     * 在切换点时，我们只需要将它的上一个/下一个点设置为Enable=false即可达到效果(在生成点时，默认都为false)。
      *
-     * @param newCurrentPoint 新位置
+     * @param newPosition 新选中位置
      */
-    private void switchToPoint(int newCurrentPoint) {
-//        for (int i = 0; i < pointsLayout.getChildCount(); i++) {
-//            pointsLayout.getChildAt(i).setEnabled(false);
-//        }
-//        pointsLayout.getChildAt(newCurrentPoint).setEnabled(true);
+    private void switchToPoint(int newPosition) {
+        int lastPos;
+        int nextPos;
+
+        if (newPosition == 0) {
+            lastPos = loopPagerAdapter.getRealPageEndPos() - 1;
+            nextPos = newPosition + 1;
+        } else if (newPosition == loopPagerAdapter.getRealPageEndPos() - 1) {
+            lastPos = newPosition - 1;
+            nextPos = 0;
+        } else {
+            lastPos = newPosition - 1;
+            nextPos = newPosition + 1;
+        }
+
+        indicatorContainerLt.getChildAt(lastPos).setEnabled(false);
+        indicatorContainerLt.getChildAt(nextPos).setEnabled(false);
+        indicatorContainerLt.getChildAt(newPosition).setEnabled(true);
     }
 }
