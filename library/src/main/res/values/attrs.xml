@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Banner">
+        <!--无限轮播开关自定义属性-->
         <attr name="autoLoop" format="boolean"/>
+        <!--指示器开关属性-->
+        <attr name="enable_indicator" format="boolean"/>
+        <!--指示器padding自定义属性-->
+        <attr name="indicator_paddingLeft" format="integer"/>
+        <attr name="indicator_paddingTop" format="integer"/>
+        <attr name="indicator_paddingRight" format="integer"/>
+        <attr name="indicator_paddingBottom" format="integer"/>
+        <!--指示点的margin自定义属性-->
+        <attr name="point_marginLeft" format="integer"/>
+        <attr name="point_marginTop" format="integer"/>
+        <attr name="point_marginRight" format="integer"/>
+        <attr name="point_marginBottom" format="integer"/>
     </declare-styleable>
 </resources>
