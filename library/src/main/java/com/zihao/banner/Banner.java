@@ -39,13 +39,17 @@ public class Banner extends RelativeLayout {
      * 指示器容器属性
      */
     private LinearLayout indicatorContainerLt;// 指示器容器
-    private int indicatorContainerLRPadding;// 指示器容器左/右填充
-    private int indicatorContainerTBPadding;// 指示器容器上/下填充
+    private int indicatorContainerPaddingL;
+    private int indicatorContainerPaddingR;
+    private int indicatorContainerPaddingT;
+    private int indicatorContainerPaddingB;
     /**
      * 点的layout的属性
      */
-    private int pointLRMargin;// point点左/右margin
-    private int pointTBMargin;// point点上/下margin
+    private int pointMarginL;
+    private int pointMarginR;
+    private int pointMarginT;
+    private int pointMarginB;
 
     private LoopViewPager loopViewPager;
     private LoopPagerAdapter loopPagerAdapter;
@@ -55,6 +59,10 @@ public class Banner extends RelativeLayout {
      * 标识是否开启无限轮播，默认为开启状态
      */
     private boolean isAutoLoop = true;
+    /**
+     * 标识是否启用指示器，默认为启用
+     */
+    private boolean isEnableIndicator = true;
 
     public Banner(Context context) {
         this(context, null);
@@ -73,13 +81,17 @@ public class Banner extends RelativeLayout {
      * @param context context
      */
     private void initDefaultAttrs(Context context) {
-        // 默认指示器容器的上下左右padding为6dp
-        indicatorContainerLRPadding = ScreenUtils.dp2px(context, 6);
-        indicatorContainerTBPadding = ScreenUtils.dp2px(context, 6);
+        // 默认指示器容器的上下左右padding为4dp
+        indicatorContainerPaddingL = ScreenUtils.dp2px(context, 4);
+        indicatorContainerPaddingR = ScreenUtils.dp2px(context, 4);
+        indicatorContainerPaddingT = ScreenUtils.dp2px(context, 4);
+        indicatorContainerPaddingB = ScreenUtils.dp2px(context, 4);
 
-        // 默认点的上下左右Margin为4dp
-        pointLRMargin = ScreenUtils.dp2px(context, 4);
-        pointTBMargin = ScreenUtils.dp2px(context, 4);
+        // 默认点的左右Margin为2dp，上下Margin为0dp
+        pointMarginL = ScreenUtils.dp2px(context, 2);
+        pointMarginR = ScreenUtils.dp2px(context, 2);
+        pointMarginT = ScreenUtils.dp2px(context, 0);
+        pointMarginB = ScreenUtils.dp2px(context, 0);
     }
 
     /**
@@ -90,7 +102,25 @@ public class Banner extends RelativeLayout {
      */
     private void initCustomAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
-        isAutoLoop = typedArray.getBoolean(R.styleable.Banner_autoLoop, true);
+
+        isAutoLoop = typedArray.getBoolean(R.styleable.Banner_autoLoop, isAutoLoop);
+        isEnableIndicator = typedArray.getBoolean(R.styleable.Banner_enable_indicator,
+                isEnableIndicator);
+
+        indicatorContainerPaddingL = typedArray.getInteger(R.styleable.Banner_indicator_paddingLeft,
+                indicatorContainerPaddingL);
+        indicatorContainerPaddingR = typedArray.getInteger(R.styleable.Banner_indicator_paddingRight,
+                indicatorContainerPaddingR);
+        indicatorContainerPaddingT = typedArray.getInteger(R.styleable.Banner_indicator_paddingTop,
+                indicatorContainerPaddingT);
+        indicatorContainerPaddingB = typedArray.getInteger(R.styleable.Banner_indicator_paddingBottom,
+                indicatorContainerPaddingB);
+
+        pointMarginL = typedArray.getInteger(R.styleable.Banner_point_marginLeft, pointMarginL);
+        pointMarginR = typedArray.getInteger(R.styleable.Banner_point_marginRight, pointMarginR);
+        pointMarginT = typedArray.getInteger(R.styleable.Banner_point_marginTop, pointMarginT);
+        pointMarginB = typedArray.getInteger(R.styleable.Banner_point_marginBottom, pointMarginB);
+
         typedArray.recycle();
     }
 
@@ -101,7 +131,9 @@ public class Banner extends RelativeLayout {
      */
     private void initView(Context context) {
         initViewPager(context);
-        initIndicatorContainerView(context);
+        if (isEnableIndicator) {// 只有启用指示器时才添加进来
+            initIndicatorContainerView(context);
+        }
     }
 
     private void initViewPager(Context context) {
@@ -120,8 +152,8 @@ public class Banner extends RelativeLayout {
         indicatorContainerLt = new LinearLayout(context);// 初始化指示器容器布局
         indicatorContainerLt.setOrientation(LinearLayout.HORIZONTAL);// 设置为水平布局方式
         indicatorContainerLt.setGravity(Gravity.CENTER);// 设置内部内容居中展示
-        indicatorContainerLt.setPadding(indicatorContainerLRPadding, 0, indicatorContainerLRPadding,
-                indicatorContainerTBPadding);// 设置填充
+        indicatorContainerLt.setPadding(indicatorContainerPaddingL, indicatorContainerPaddingT,
+                indicatorContainerPaddingR, indicatorContainerPaddingB);// 设置填充
         LayoutParams pointsLayoutParams = new LayoutParams(RT_MP, RT_WC);
         pointsLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         pointsLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -166,27 +198,29 @@ public class Banner extends RelativeLayout {
         loopViewPager.setAdapter(loopPagerAdapter);
         loopViewPager.setCurrentItem(loopPagerAdapter.getRealPageStartPos());// 先在这里滚动至非填充区域
         if (loopPagerAdapter.getCount() > 2) {
-            initPoints(getContext(), dataList);
+            initIndicatorPoints(getContext(), dataList);
             loopViewPager.setOffscreenPageLimit(2);// 缓存2页
             switchToPoint(loopPagerAdapter.getRealPageStartPos() - 1);
         }
     }
 
     /**
-     * 初始化dot点
+     * 初始化指示点
      *
      * @param context  context
      * @param dataList 数据集
      */
-    private void initPoints(Context context, List dataList) {
-        LinearLayout.LayoutParams pointParams = new LinearLayout.LayoutParams(LT_WC, LT_WC);
-        pointParams.setMargins(pointLRMargin, pointTBMargin, pointLRMargin, pointTBMargin);
-        ImageView pointImg;
-        for (int i = 0; i < dataList.size(); i++) {
-            pointImg = new ImageView(context);
-            pointImg.setBackgroundResource(R.drawable.point_default_selector);
-            pointImg.setEnabled(false);
-            indicatorContainerLt.addView(pointImg, pointParams);
+    private void initIndicatorPoints(Context context, List dataList) {
+        if (indicatorContainerLt != null) {
+            LinearLayout.LayoutParams pointParams = new LinearLayout.LayoutParams(LT_WC, LT_WC);
+            pointParams.setMargins(pointMarginL, pointMarginT, pointMarginR, pointMarginB);
+            ImageView pointImg;
+            for (int i = 0; i < dataList.size(); i++) {
+                pointImg = new ImageView(context);
+                pointImg.setBackgroundResource(R.drawable.point_default_selector);
+                pointImg.setEnabled(false);
+                indicatorContainerLt.addView(pointImg, pointParams);
+            }
         }
     }
 
