@@ -31,9 +31,9 @@
         <td>boolean</td>
         <td>标识是否打开/关闭无限轮播开关，默认为打开状态true</td>
         <td>
-            在代码中动态设置：
-            banner.setAutoLoop(true);
-            在xml中静态配置：
+            在代码中动态设置：</br>
+            banner.setAutoLoop(true);</br>
+            在xml中静态配置：</br>
             app:autoLoop="true"
         </td>
     </tr>
@@ -42,7 +42,7 @@
         <td>boolean</td>
         <td>标识是否启用指示器，默认为启用true</td>
         <td>
-            在xml中使用：
+            在xml中使用：</br>
             app:isEnableIndicator="true"
         </td>
     </tr>
@@ -51,10 +51,10 @@
         <td>integer</td>
         <td>指示器容器填充属性</td>
         <td>
-            在xml中使用：
-            app:indicatorContainerPaddingL="10"
-            app:indicatorContainerPaddingR="10"
-            app:indicatorContainerPaddingT="6"
+            在xml中使用：</br>
+            app:indicatorContainerPaddingL="10"</br>
+            app:indicatorContainerPaddingR="10"</br>
+            app:indicatorContainerPaddingT="6"</br>
             app:indicatorContainerPaddingB="6"
         </td>
     </tr>
@@ -63,14 +63,15 @@
         <td>integer</td>
         <td>指示点的Margin属性</td>
         <td>
-            在xml中使用：
-            app:pointMarginL="10"
-            app:pointMarginR="10"
-            app:pointMarginT="6"
+            在xml中使用：</br>
+            app:pointMarginL="10"</br>
+            app:pointMarginR="10"</br>
+            app:pointMarginT="6"</br>
             app:pointMarginB="6"
         </td>
     </tr>
 </table>
+
 # 设计思路
 - 如何实现无限轮播效果？
 在ViewPager的最左侧、最右侧各新增一个页卡，用来映射对应的尾页 / 首页并设置相同的图片内容，达到无缝对
