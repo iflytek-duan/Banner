@@ -15,7 +15,7 @@
 ```
 	dependencies {
 	        ...
-	        compile 'com.github.iflytek-duan:Banner:1.0.0'
+	        compile 'com.github.iflytek-duan:Banner:1.0.1'
 	}
 ```
 # 支持属性
