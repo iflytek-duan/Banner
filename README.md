@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/iflytek-duan/Banner.svg)](https://jitpack.io/#iflytek-duan/Banner)
 # Banner
-使用ViewPager实现无限轮播效果，实现效果如下：
+使用ViewPager实现无限轮播效果，实现效果如下：</br>
  ![banner](/images/preview.gif)
 # 引入步骤
 1. 在build.gradle(Project:xxx)中的repositories内添加：
