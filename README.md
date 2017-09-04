@@ -70,6 +70,15 @@
             app:pointMarginB="6"
         </td>
     </tr>
+    <tr>
+        <td>pointDrawable</td>
+        <td>reference</td>
+        <td>指示点图片属性</td>
+        <td>
+            在xml中使用：</br>
+            app:pointDrawable="@drawable/point_default_selector"
+        </td>
+    </tr>
 </table>
 
 # 设计思路
