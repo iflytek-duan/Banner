@@ -15,5 +15,7 @@
         <attr name="point_marginTop" format="integer"/>
         <attr name="point_marginRight" format="integer"/>
         <attr name="point_marginBottom" format="integer"/>
+        <!--指示点图片属性-->
+        <attr name="pointDrawable" format="reference"/>
     </declare-styleable>
 </resources>

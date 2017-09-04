@@ -46,6 +46,7 @@ public class Banner extends RelativeLayout {
     /**
      * 点的layout的属性
      */
+    private int pointDrawableResId;// point资源图,默认为point_default_selector
     private int pointMarginL;
     private int pointMarginR;
     private int pointMarginT;
@@ -87,6 +88,8 @@ public class Banner extends RelativeLayout {
         indicatorContainerPaddingT = ScreenUtils.dp2px(context, 4);
         indicatorContainerPaddingB = ScreenUtils.dp2px(context, 4);
 
+        // 默认点的背景为R.drawable.point_default_selector
+        pointDrawableResId = R.drawable.point_default_selector;
         // 默认点的左右Margin为2dp，上下Margin为0dp
         pointMarginL = ScreenUtils.dp2px(context, 2);
         pointMarginR = ScreenUtils.dp2px(context, 2);
@@ -116,6 +119,7 @@ public class Banner extends RelativeLayout {
         indicatorContainerPaddingB = typedArray.getInteger(R.styleable.Banner_indicator_paddingBottom,
                 indicatorContainerPaddingB);
 
+        pointDrawableResId = typedArray.getResourceId(R.styleable.Banner_pointDrawable, pointDrawableResId);
         pointMarginL = typedArray.getInteger(R.styleable.Banner_point_marginLeft, pointMarginL);
         pointMarginR = typedArray.getInteger(R.styleable.Banner_point_marginRight, pointMarginR);
         pointMarginT = typedArray.getInteger(R.styleable.Banner_point_marginTop, pointMarginT);
@@ -217,7 +221,7 @@ public class Banner extends RelativeLayout {
             ImageView pointImg;
             for (int i = 0; i < dataList.size(); i++) {
                 pointImg = new ImageView(context);
-                pointImg.setBackgroundResource(R.drawable.point_default_selector);
+                pointImg.setBackgroundResource(pointDrawableResId);
                 pointImg.setEnabled(false);
                 indicatorContainerLt.addView(pointImg, pointParams);
             }
