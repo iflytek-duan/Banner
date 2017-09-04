@@ -7,8 +7,8 @@ android {
         applicationId "com.zihao.banner"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0.1001"
+        versionCode 2
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
