@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * ClassName：DepthPageTransformer
  * Description：TODO<DepthPageTransformer切换动画>
- * Author：Administrator
+ * Author：zihao
  * Date：2017/8/18 15:10
  * Version：v1.0
  */

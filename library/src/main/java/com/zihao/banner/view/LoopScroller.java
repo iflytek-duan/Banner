@@ -13,7 +13,10 @@ import android.widget.Scroller;
  */
 class LoopScroller extends Scroller {
 
-    private boolean noDuration = false;// 标识是否没有滚动时间(true:没有；false:有)，默认为有
+    /**
+     * 标识是否没有滚动时间(true:没有；false:有)，默认为有
+     */
+    private boolean noDuration = false;
 
     LoopScroller(Context context) {
         super(context);
