@@ -21,8 +21,7 @@ public class LoopViewPager extends ViewPager {
     private LoopScroller loopScroller;
 
     public LoopViewPager(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public LoopViewPager(Context context, AttributeSet attrs) {
@@ -75,7 +74,7 @@ public class LoopViewPager extends ViewPager {
             field.setAccessible(true);
             field.set(this, loopScroller);// 利用反射设置mScroller域为自己定义的loopScroller
         } catch (Exception e) {
-            Log.e(TAG, "setViewPagerScrollSpeed error:" + e.toString());
+            Log.e(TAG, "setViewPagerScrollSpeed:" + e.toString());
         }
     }
 }

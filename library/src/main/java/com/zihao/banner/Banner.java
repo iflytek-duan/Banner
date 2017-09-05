@@ -180,15 +180,14 @@ public class Banner extends RelativeLayout {
     private void setVPDataSource() {
         if (bannerAdapter != null) {// bannerAdapter is not null
             List list = bannerAdapter.getDataList();
-            if (list == null) {
-                Log.e(TAG, "bannerAdapter.getDataList() is null.");
+
+            if (list != null && list.size() > 0) {
+                setVPAdapter(list);
             } else {
-                if (list.size() > 0) {
-                    setVPAdapter(list);
-                }
+                Log.e(TAG, "setVPDataSource: dataList is empty.");
             }
         } else {// bannerAdapter is null
-            Log.e(TAG, "bannerAdapter is null.");
+            Log.e(TAG, "setVPDataSource: bannerAdapter is null.");
         }
     }
 
@@ -242,22 +241,11 @@ public class Banner extends RelativeLayout {
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            if (isAutoLoop && positionOffset == 0) {// 允许无限轮播且滚动完成进入内部判断
-//                if (position == 0) {// 如果position为0，则跳转至结束位置
-//                    // switch to the last page.
-//                    setCurrentItem(pagerAdapter.getRealPageEndPos(), false);
-//                }
-//
-//                if (position == pagerAdapter.getCount() - 1) {// 如果position为pagerAdapter.getCount() - 1，则跳转至开始位置
-//                    // switch to the first page.
-//                    setCurrentItem(pagerAdapter.getRealPageStartPos(), false);
-//                }
-//            }
         }
 
         @Override
         public void onPageSelected(int position) {
-            Log.e(TAG, "page selected:" + position);
+            Log.d(TAG, "onPageSelected:" + position);
         }
 
         @Override
@@ -267,7 +255,7 @@ public class Banner extends RelativeLayout {
             switch (state) {
                 case ViewPager.SCROLL_STATE_IDLE:// 空闲状态，没有任何滚动正在进行（表明完成滚动）
                     int currentItem = loopViewPager.getCurrentItem();
-                    Log.e(TAG, "onPageScrollStateChanged currentItem:" + currentItem);
+                    Log.d(TAG, "onPageScrollStateChanged, currentItem:" + currentItem);
 
                     if (loopPagerAdapter.isAutoLoop()) {// 开启无限轮播情况下item的切换
                         if (currentItem == 0) {// 尾部item页映射，跳转至尾部对接

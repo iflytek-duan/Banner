@@ -2,6 +2,7 @@ package com.zihao.banner.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,6 +52,8 @@ public class LoopPagerAdapter extends PagerAdapter {
                 realPageEndPos = count - 1;
             }
         }
+
+        Log.d(TAG, "getCount:" + count);
         return count;// 只有创建1个以上的真实页卡时才会在边界添加View用于支持无限循环效果
     }
 
