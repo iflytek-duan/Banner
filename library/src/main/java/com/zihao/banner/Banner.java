@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +30,10 @@ public class Banner extends RelativeLayout {
 
     private static final String TAG = Banner.class.getSimpleName();
 
+    /**
+     * 最小移动距离，用于判断是否为滑动操作
+     */
+    private static final int MIN_MOVING_DISTANCE = 10;
     /**
      * 布局参数
      */
@@ -56,6 +62,8 @@ public class Banner extends RelativeLayout {
     private LoopPagerAdapter loopPagerAdapter;
     private BannerAdapter bannerAdapter;
 
+    private OnPageClickListener onPageClickListener;// 页卡点击事件监听器
+
     /**
      * 标识是否开启无限轮播，默认为开启状态
      */
@@ -64,6 +72,10 @@ public class Banner extends RelativeLayout {
      * 标识是否启用指示器，默认为启用
      */
     private boolean isEnableIndicator = true;
+    /**
+     * 标识页卡是否正在改变状态(防止与onTouch事件引发冲突--滚动过程中点击后造成页卡停留(return true导致))
+     */
+    private boolean onPageChange = false;
 
     public Banner(Context context) {
         this(context, null);
@@ -140,9 +152,42 @@ public class Banner extends RelativeLayout {
         }
     }
 
+    /**
+     * 初始化ViewPager
+     *
+     * @param context context
+     */
     private void initViewPager(Context context) {
         loopViewPager = new LoopViewPager(context);
         loopViewPager.addOnPageChangeListener(onPageChangeListener);
+
+        loopViewPager.setOnTouchListener(new OnTouchListener() {
+            float downX, downY;// 按下时X、Y坐标
+            float dx, dy;//松开时的X、Y坐标
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:// 按下
+                        downX = motionEvent.getX();
+                        downY = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:// 松开
+                        dx = motionEvent.getX() - downX;// X轴的距离差
+                        dy = motionEvent.getY() - downY;// Y轴的距离差
+
+                        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) < MIN_MOVING_DISTANCE // 在X轴移动，且移动距离小于最小限制，视为点击事件
+                                || Math.abs(dx) < Math.abs(dy) && Math.abs(dy) < MIN_MOVING_DISTANCE) {// 在Y轴移动，且移动距离小于最小限制，视为点击事件
+                            if(!onPageChange && onPageClickListener != null){// 点击操作
+                                onPageClickListener.onPageClick(loopViewPager.getCurrentItem());
+                                return true;// 拦截touch事件
+                            }
+                        }
+                        break;
+                }
+                return false;// 默认不拦截touch事件
+            }
+        });
         LayoutParams params = new LayoutParams(RT_MP, RT_MP);
         addView(loopViewPager, params);
     }
@@ -270,8 +315,11 @@ public class Banner extends RelativeLayout {
                     } else {// 未开启无限轮播情况下item的切换
                         switchToPoint(currentItem - 1);
                     }
+
+                    onPageChange = false;// 在这边标记为默认正常状态
                     break;
                 case ViewPager.SCROLL_STATE_DRAGGING:// 正在拖动page状态
+                    onPageChange = true;// 在这里标记为页卡改变状态
                     break;
                 case ViewPager.SCROLL_STATE_SETTLING:// 手指已离开屏幕，自动完成剩余的动画效果
                     break;
@@ -313,5 +361,16 @@ public class Banner extends RelativeLayout {
         indicatorContainerLt.getChildAt(lastPos).setEnabled(false);
         indicatorContainerLt.getChildAt(nextPos).setEnabled(false);
         indicatorContainerLt.getChildAt(newPosition).setEnabled(true);
+    }
+
+    /**
+     * 页卡点击事件
+     */
+    public interface OnPageClickListener {
+        void onPageClick(int position);
+    }
+
+    public void setOnPageClickListener(OnPageClickListener onPageClickListener) {
+        this.onPageClickListener = onPageClickListener;
     }
 }
