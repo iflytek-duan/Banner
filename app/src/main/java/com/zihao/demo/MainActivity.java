@@ -2,18 +2,20 @@ package com.zihao.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zihao.banner.Banner;
 import com.zihao.banner.adapter.BannerAdapter;
 import com.zihao.banner.bean.BannerTestModel;
-import com.zihao.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private List<BannerTestModel> dataList;
 
     @Override
@@ -38,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 iv.setBackgroundResource(bannerTestModel.getImgRes());
             }
 
+        });
+        banner.setOnPageClickListener(new Banner.OnPageClickListener() {
+            @Override
+            public void onPageClick(int position) {
+                Log.e(TAG, "onPageClick:" + position);
+            }
         });
 
     }
