@@ -17,6 +17,7 @@ import com.zihao.banner.adapter.LoopPagerAdapter;
 import com.zihao.banner.util.ScreenUtils;
 import com.zihao.banner.view.LoopViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -178,7 +179,7 @@ public class Banner extends RelativeLayout {
 
                         if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) < MIN_MOVING_DISTANCE // 在X轴移动，且移动距离小于最小限制，视为点击事件
                                 || Math.abs(dx) < Math.abs(dy) && Math.abs(dy) < MIN_MOVING_DISTANCE) {// 在Y轴移动，且移动距离小于最小限制，视为点击事件
-                            if(!onPageChange && onPageClickListener != null){// 点击操作
+                            if (!onPageChange && onPageClickListener != null) {// 点击操作
                                 onPageClickListener.onPageClick(loopViewPager.getCurrentItem());
                                 return true;// 拦截touch事件
                             }
@@ -337,6 +338,9 @@ public class Banner extends RelativeLayout {
         isAutoLoop = autoLoop;
     }
 
+    // 用于记录已设置为Enable状态的指示点,解决快速滑动切换item导致onPageScrollStateChanged方法内
+    // 未完全触发每个item的空闲状态
+    private ArrayList<View> enablePointList = new ArrayList<>();
     /**
      * 切换至指定的指示点(即将对应位置的点设置为Enable=true)
      * 在切换点时，我们只需要将它的上一个/下一个点设置为Enable=false即可达到效果(在生成点时，默认都为false)。
@@ -344,22 +348,14 @@ public class Banner extends RelativeLayout {
      * @param newPosition 新选中位置
      */
     private void switchToPoint(int newPosition) {
-        int lastPos;
-        int nextPos;
-
-        if (newPosition == 0) {
-            lastPos = loopPagerAdapter.getRealPageEndPos() - 1;
-            nextPos = newPosition + 1;
-        } else if (newPosition == loopPagerAdapter.getRealPageEndPos() - 1) {
-            lastPos = newPosition - 1;
-            nextPos = 0;
-        } else {
-            lastPos = newPosition - 1;
-            nextPos = newPosition + 1;
+        // 重置已选中内容的状态
+        if (enablePointList != null && enablePointList.size() > 0) {
+            for (View childView : enablePointList) {
+                childView.setEnabled(false);
+                enablePointList.remove(childView);
+            }
         }
-
-        indicatorContainerLt.getChildAt(lastPos).setEnabled(false);
-        indicatorContainerLt.getChildAt(nextPos).setEnabled(false);
+        enablePointList.add(indicatorContainerLt.getChildAt(newPosition));
         indicatorContainerLt.getChildAt(newPosition).setEnabled(true);
     }
 
