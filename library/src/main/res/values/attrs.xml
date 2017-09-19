@@ -5,6 +5,8 @@
         <attr name="autoLoop" format="boolean"/>
         <!--指示器开关属性-->
         <attr name="enable_indicator" format="boolean"/>
+        <!--是否启用画廊默认，默认为否-->
+        <attr name="enable_gallery" format="boolean"/>
         <!--指示器padding自定义属性-->
         <attr name="indicator_paddingLeft" format="integer"/>
         <attr name="indicator_paddingTop" format="integer"/>
