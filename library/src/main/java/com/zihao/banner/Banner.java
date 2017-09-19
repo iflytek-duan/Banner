@@ -74,6 +74,10 @@ public class Banner extends RelativeLayout {
      */
     private boolean isEnableIndicator = true;
     /**
+     * 标识是否开启画廊效果，默认为否
+     */
+    private boolean isEnableGallery = false;
+    /**
      * 标识页卡是否正在改变状态(防止与onTouch事件引发冲突--滚动过程中点击后造成页卡停留(return true导致))
      */
     private boolean onPageChange = false;
@@ -122,6 +126,7 @@ public class Banner extends RelativeLayout {
         isAutoLoop = typedArray.getBoolean(R.styleable.Banner_autoLoop, isAutoLoop);
         isEnableIndicator = typedArray.getBoolean(R.styleable.Banner_enable_indicator,
                 isEnableIndicator);
+        isEnableGallery = typedArray.getBoolean(R.styleable.Banner_enable_gallery, isEnableGallery);
 
         indicatorContainerPaddingL = typedArray.getInteger(R.styleable.Banner_indicator_paddingLeft,
                 indicatorContainerPaddingL);
@@ -189,8 +194,31 @@ public class Banner extends RelativeLayout {
                 return false;// 默认不拦截touch事件
             }
         });
+
         LayoutParams params = new LayoutParams(RT_MP, RT_MP);
-        addView(loopViewPager, params);
+        initGallery(isEnableGallery);
+        this.addView(loopViewPager, params);
+    }
+
+    /**
+     * 初始化画廊效果
+     *
+     * @param enableGallery true：启用画廊效果；false：不启用。
+     */
+    private void initGallery(boolean enableGallery) {
+        if (enableGallery) {// 启用画廊模式的情况下，进行对应配置
+            // 设置Viewpager左右边距，便于展示其它内容页
+            LayoutParams params = (LayoutParams) loopViewPager.getLayoutParams();
+            params.leftMargin = ScreenUtils.dp2px(getContext(), 60);
+            params.rightMargin = ScreenUtils.dp2px(getContext(), 60);
+
+            loopViewPager.setClipChildren(false);
+            loopViewPager.setPageMargin(20);
+            loopViewPager.setLayoutParams(params);
+            this.setClipChildren(false);// 设置在子View进行绘制时不裁切它们的显示范围
+        } else {// 不启用画廊模式的情况下，关闭硬件加速效果
+            loopViewPager.setLayerType(View.LAYER_TYPE_SOFTWARE, null);// 关闭硬件加速
+        }
     }
 
     /**
@@ -246,9 +274,11 @@ public class Banner extends RelativeLayout {
         loopPagerAdapter = new LoopPagerAdapter(bannerAdapter, dataList, isAutoLoop);
         loopViewPager.setAdapter(loopPagerAdapter);
         loopViewPager.setCurrentItem(loopPagerAdapter.getRealPageStartPos());// 先在这里滚动至非填充区域
-        if (loopPagerAdapter.getCount() > 2) {
+
+        int pageCount = loopPagerAdapter.getCount();
+        if (pageCount > 2) {// 当page数量超过2个时，加入指示点
             initIndicatorPoints(getContext(), dataList);
-            loopViewPager.setOffscreenPageLimit(2);// 缓存2页
+            loopViewPager.setOffscreenPageLimit(pageCount > 3 ? 3 : pageCount);// 默认缓存3页
             switchToPoint(loopPagerAdapter.getRealPageStartPos() - 1);
         }
     }
@@ -341,6 +371,7 @@ public class Banner extends RelativeLayout {
     // 用于记录已设置为Enable状态的指示点,解决快速滑动切换item导致onPageScrollStateChanged方法内
     // 未完全触发每个item的空闲状态
     private ArrayList<View> enablePointList = new ArrayList<>();
+
     /**
      * 切换至指定的指示点(即将对应位置的点设置为Enable=true)
      * 在切换点时，我们只需要将它的上一个/下一个点设置为Enable=false即可达到效果(在生成点时，默认都为false)。
@@ -364,9 +395,15 @@ public class Banner extends RelativeLayout {
      */
     public interface OnPageClickListener {
         void onPageClick(int position);
+
     }
 
     public void setOnPageClickListener(OnPageClickListener onPageClickListener) {
         this.onPageClickListener = onPageClickListener;
+    }
+
+    public void setEnableGallery(boolean enableGallery) {
+        isEnableGallery = enableGallery;
+        initGallery(isEnableGallery);
     }
 }
