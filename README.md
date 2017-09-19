@@ -52,8 +52,6 @@
         <td>boolean</td>
         <td>标识是否启用画廊效果，默认为不启用false</td>
         <td>
-            在代码中动态设置：</br>
-            banner.setEnableGallery(true);</br>
             在xml中使用：</br>
             app:enable_gallery="true"
         </td>
