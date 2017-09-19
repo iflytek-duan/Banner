@@ -44,7 +44,18 @@
         <td>标识是否启用指示器，默认为启用true</td>
         <td>
             在xml中使用：</br>
-            app:isEnableIndicator="true"
+            app:enable_indicator="true"
+        </td>
+    </tr>
+    <tr>
+        <td>isEnableGallery</td>
+        <td>boolean</td>
+        <td>标识是否启用画廊效果，默认为不启用false</td>
+        <td>
+            在代码中动态设置：</br>
+            banner.setEnableGallery(true);</br>
+            在xml中使用：</br>
+            app:enable_gallery="true"
         </td>
     </tr>
     <tr>
@@ -53,10 +64,10 @@
         <td>指示器容器填充属性</td>
         <td>
             在xml中使用：</br>
-            app:indicatorContainerPaddingL="10"</br>
-            app:indicatorContainerPaddingR="10"</br>
-            app:indicatorContainerPaddingT="6"</br>
-            app:indicatorContainerPaddingB="6"
+            app:indicator_paddingLeft="10"</br>
+            app:indicator_paddingRight="10"</br>
+            app:indicator_paddingTop="6"</br>
+            app:indicator_paddingBottom="6"
         </td>
     </tr>
     <tr>
@@ -65,10 +76,10 @@
         <td>指示点的Margin属性</td>
         <td>
             在xml中使用：</br>
-            app:pointMarginL="10"</br>
-            app:pointMarginR="10"</br>
-            app:pointMarginT="6"</br>
-            app:pointMarginB="6"
+            app:point_marginLeft="10"</br>
+            app:point_marginRight="10"</br>
+            app:point_marginTop="6"</br>
+            app:point_marginBottom="6"
         </td>
     </tr>
     <tr>
