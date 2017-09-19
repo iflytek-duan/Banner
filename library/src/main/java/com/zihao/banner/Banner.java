@@ -407,14 +407,4 @@ public class Banner extends RelativeLayout {
     public void setOnPageClickListener(OnPageClickListener onPageClickListener) {
         this.onPageClickListener = onPageClickListener;
     }
-
-    /**
-     * 设置是否打开画廊效果
-     *
-     * @param enableGallery true：打开；false：关闭。默认为false。
-     */
-    public void setEnableGallery(boolean enableGallery) {
-        isEnableGallery = enableGallery;
-        initGallery(isEnableGallery);
-    }
 }
