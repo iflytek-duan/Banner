@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 
 import java.lang.reflect.Field;
 
@@ -30,7 +29,7 @@ public class LoopViewPager extends ViewPager {
     }
 
     private void init() {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);// 关闭硬件加速
+//        setLayerType(View.LAYER_TYPE_SOFTWARE, null);// 关闭硬件加速
         setViewPagerScrollSpeed(getContext());
         // this.setPageTransformer(true, new DepthPageTransformer());
     }
