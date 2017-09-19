@@ -19,6 +19,23 @@
 	        compile 'com.github.iflytek-duan:Banner:1.0.1'
 	}
 ```
+
+# 更多设置
+## 设置Banner页卡点击事件
+添加如下代码即可完成Banner页卡点击事件监听：
+```java
+    banner.setOnPageClickListener(new Banner.OnPageClickListener() {
+        @Override
+        public void onPageClick(int position) {
+        }
+    });
+```
+## 设置画廊效果
+在布局中使用以下代码即可设置Banner为画廊模式：<br/>
+`app:enable_gallery="true"`<br/>
+实现效果如下：<br/>
+![Banner_Gallery](/images/preview_gallery.gif)
+
 # 支持属性
 <table>
     <tr>
@@ -90,16 +107,6 @@
         </td>
     </tr>
 </table>
-
-# 设置Banner页卡点击事件
-添加如下代码即可完成Banner页卡点击事件监听：
-```java
-    banner.setOnPageClickListener(new Banner.OnPageClickListener() {
-        @Override
-        public void onPageClick(int position) {
-        }
-    });
-```
 
 # 设计思路
 - 如何实现无限轮播效果？
