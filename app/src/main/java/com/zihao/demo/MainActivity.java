@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onPageClick:" + position);
             }
         });
+        banner.setEnableGallery(true);
 
     }
 
