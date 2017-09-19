@@ -196,7 +196,6 @@ public class Banner extends RelativeLayout {
         });
 
         LayoutParams params = new LayoutParams(RT_MP, RT_MP);
-        initGallery(isEnableGallery);
         this.addView(loopViewPager, params);
     }
 
@@ -216,7 +215,13 @@ public class Banner extends RelativeLayout {
             loopViewPager.setPageMargin(20);
             loopViewPager.setLayoutParams(params);
             this.setClipChildren(false);// 设置在子View进行绘制时不裁切它们的显示范围
-        } else {// 不启用画廊模式的情况下，关闭硬件加速效果
+        } else {// 不启用画廊模式的情况下，关闭硬件加速效果同时重置ViewPager的LayoutParams
+            LayoutParams params = (LayoutParams) loopViewPager.getLayoutParams();
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+
+            loopViewPager.setPageMargin(0);
+            loopViewPager.setLayoutParams(params);
             loopViewPager.setLayerType(View.LAYER_TYPE_SOFTWARE, null);// 关闭硬件加速
         }
     }
@@ -273,6 +278,7 @@ public class Banner extends RelativeLayout {
     private void setVPAdapter(List dataList) {
         loopPagerAdapter = new LoopPagerAdapter(bannerAdapter, dataList, isAutoLoop);
         loopViewPager.setAdapter(loopPagerAdapter);
+        initGallery(isEnableGallery);// 初始化画廊效果
         loopViewPager.setCurrentItem(loopPagerAdapter.getRealPageStartPos());// 先在这里滚动至非填充区域
 
         int pageCount = loopPagerAdapter.getCount();
@@ -402,6 +408,11 @@ public class Banner extends RelativeLayout {
         this.onPageClickListener = onPageClickListener;
     }
 
+    /**
+     * 设置是否打开画廊效果
+     *
+     * @param enableGallery true：打开；false：关闭。默认为false。
+     */
     public void setEnableGallery(boolean enableGallery) {
         isEnableGallery = enableGallery;
         initGallery(isEnableGallery);
